@@ -1,0 +1,16 @@
+# Machine-specific. Must never be committed - it is regenerated per machine.
+local.properties
+
+# Release signing. Losing the keystore means the app can never be updated
+# in place; leaking the passphrase means anyone can ship a new version of it.
+keystore.properties
+/release/
+
+# Gradle / Android Studio
+.gradle/
+build/
+.idea/
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/

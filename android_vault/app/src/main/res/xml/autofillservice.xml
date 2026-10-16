@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Optional metadata for the autofill service. No settingsActivity is
+     declared: configuration lives inside the app itself, and pointing this at
+     an activity that does not accept the framework's intent extras would make
+     the system's "settings" affordance crash. -->
+<autofill-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/autofill_service_description" />

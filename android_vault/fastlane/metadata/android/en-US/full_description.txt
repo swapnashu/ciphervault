@@ -1,0 +1,38 @@
+CipherVault is a zero-knowledge password manager. Your vault is encrypted and
+decrypted on this phone with your master password - the server only ever stores
+ciphertext it cannot read.
+
+Why zero-knowledge matters
+The server never receives your master password or your vault keys. If someone
+breaches the server, they get encrypted blobs and nothing else. There is no
+password reset, because nobody but you can open your vault - that is the point.
+
+Security built in
+- Argon2id key derivation: memory-hard key derivation resists GPU and ASIC
+  attacks, not just fast hash cracking.
+- AES-256-GCM encryption with keys derived on device.
+- Strong biometrics only (Class 3): fingerprint or face unlock can be enabled
+  after you have unlocked once with your master password.
+- Certificate pinning: the app refuses to talk to a look-alike server even if a
+  certificate authority is tricked.
+- Auto-lock: the vault locks itself after two minutes in the background.
+- FLAG_SECURE: screenshots, screen recording and the recents preview are blocked
+  so credentials cannot leave the display.
+- Autofill: fill and save credentials in other apps through the Android autofill
+  service.
+
+Everyday features
+- Store passwords, usernames, URLs, notes and card details.
+- Built-in authenticator: paste or scan a Base32 secret and get 60-second TOTP
+  codes without a second app.
+- Generate strong passwords with a live strength meter.
+- Search, favourites and categories to keep large vaults usable.
+- Copy any field to the clipboard with one tap.
+
+Honest about the trade-off
+There is no password reset link and no cloud recovery. Write your master
+password down and keep it somewhere safe - the app tells you this before you
+create your vault, not after.
+
+No ads, no trackers, no analytics. The app needs the internet only to sync your
+encrypted vault.

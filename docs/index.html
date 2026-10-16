@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CipherVault — Zero-knowledge password manager</title>
+<meta name="description" content="CipherVault is a zero-knowledge password manager for Android. Argon2id, AES-256-GCM, offline-first sync, TOTP authenticator and autofill. Open source, Apache-2.0.">
+<style>
+  :root{
+    --green:#0B6B47; --green-dark:#084F35; --gold:#B08D1F;
+    --ink:#16241D; --muted:#5B6B63; --bg:#F5F8F6; --card:#FFFFFF;
+    --border:#E2EAE5; --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       color:var(--ink);background:var(--bg);line-height:1.6}
+  a{color:var(--green);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  nav{position:sticky;top:0;background:rgba(245,248,246,.92);backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--border);z-index:10}
+  nav .wrap{display:flex;align-items:center;gap:28px;height:60px}
+  nav .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--green);font-size:18px}
+  nav .brand img{width:28px;height:28px}
+  nav .links{display:flex;gap:22px;margin-left:auto;font-size:14.5px}
+  nav .links a{color:var(--muted);font-weight:500}
+  nav .links a:hover{color:var(--green);text-decoration:none}
+
+  .hero{padding:84px 0 72px;text-align:center}
+  .hero img.icon{width:120px;height:120px;margin-bottom:26px;filter:drop-shadow(0 10px 24px rgba(11,107,71,.25))}
+  .hero h1{font-size:clamp(34px,5vw,52px);letter-spacing:-.02em;color:var(--green-dark);margin-bottom:14px}
+  .hero p.lead{font-size:19px;color:var(--muted);max-width:640px;margin:0 auto 34px}
+  .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-block;padding:13px 26px;border-radius:10px;font-weight:600;font-size:15px}
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
+  .btn-primary{background:var(--green);color:#fff;box-shadow:0 6px 18px rgba(11,107,71,.30)}
+  .btn-primary:hover{background:var(--green-dark)}
+  .btn-ghost{background:#fff;color:var(--green);border:1.5px solid var(--green)}
+  .badges{margin-top:22px;font-size:13px;color:var(--muted)}
+  .badges code{background:#fff;border:1px solid var(--border);border-radius:6px;padding:2px 8px;font-size:12.5px}
+
+  section{padding:64px 0}
+  section h2{font-size:30px;letter-spacing:-.01em;margin-bottom:8px;color:var(--green-dark)}
+  section .sub{color:var(--muted);margin-bottom:36px;max-width:680px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+  .card h3{font-size:16.5px;margin-bottom:6px;color:var(--green)}
+  .card p{font-size:14.5px;color:var(--muted)}
+  .card .ico{font-size:22px;margin-bottom:10px;display:block}
+
+  .sec-list{list-style:none;display:grid;gap:12px}
+  .sec-list li{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--gold);
+               border-radius:10px;padding:14px 18px;font-size:15px}
+  .sec-list li strong{color:var(--green-dark)}
+
+  .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+  .shots img{width:100%;border-radius:var(--radius);border:1px solid var(--border);
+             box-shadow:0 8px 22px rgba(22,36,29,.10);background:#fff}
+
+  .dl{background:var(--green-dark);color:#EAF4EF;border-radius:18px;padding:44px;text-align:center}
+  .dl h2{color:#fff}
+  .dl .sub{color:#B9D4C7;margin-left:auto;margin-right:auto}
+  .dl .meta{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:26px;
+            font-size:13.5px;color:#9FC4B4}
+  .dl .meta b{display:block;color:#fff;font-size:15px}
+  .dl code{word-break:break-all;font-size:12px;color:#9FC4B4}
+
+  .privacy{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+           padding:36px;font-size:15px}
+  .privacy h3{color:var(--green);margin:26px 0 8px;font-size:18px}
+  .privacy h3:first-child{margin-top:0}
+  .privacy p{color:var(--muted);margin-bottom:10px}
+  .privacy table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  .privacy th,.privacy td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top}
+  .privacy th{background:var(--bg);color:var(--green-dark)}
+
+  .faq{display:grid;gap:14px}
+  .faq details{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px}
+  .faq summary{font-weight:600;cursor:pointer;color:var(--green-dark)}
+  .faq p{margin-top:10px;color:var(--muted);font-size:14.5px}
+
+  footer{border-top:1px solid var(--border);padding:36px 0;font-size:14px;color:var(--muted)}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="images/icon.png" alt="">CipherVault</a>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#security">Security</a>
+      <a href="#screenshots">Screenshots</a>
+      <a href="#download">Download</a>
+      <a href="#privacy">Privacy</a>
+      <a href="https://github.com/swapnashu/ciphervault">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <img class="icon" src="images/icon.png" alt="CipherVault icon">
+    <h1>CipherVault</h1>
+    <p class="lead">The zero-knowledge password manager for Android.
+    Argon2id on device, AES-256-GCM in transit and at rest on the server,
+    offline-first sync — and a server that can never read a single password.</p>
+    <div class="btns">
+      <a class="btn btn-primary" href="https://github.com/swapnashu/ciphervault/releases/latest">Download APK</a>
+      <a class="btn btn-ghost" href="https://github.com/swapnashu/ciphervault">View source</a>
+    </div>
+    <p class="badges">v0.1.0 · Android 8.0+ (API 26) · Apache-2.0 ·
+      <code>SHA-256 7910bb1d…d51650982</code></p>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Everything a password manager should do</h2>
+    <p class="sub">Logins, notes, cards, identities and a built-in authenticator —
+    with none of the telemetry that usually comes along for the ride.</p>
+    <div class="grid">
+      <div class="card"><span class="ico">🗄️</span><h3>Five entry types</h3>
+        <p>Logins, secure notes, payment cards, identities and standalone TOTP seeds, with custom fields, favorites and fast search.</p></div>
+      <div class="card"><span class="ico">⌨️</span><h3>Autofill</h3>
+        <p>A real Android AutofillService: fills and saves credentials in other apps with registrable-domain-aware matching.</p></div>
+      <div class="card"><span class="ico">🔢</span><h3>Authenticator</h3>
+        <p>On-device TOTP codes (SHA1/256/512, custom digits and period), a camera QR scanner and otpauth:// link support.</p></div>
+      <div class="card"><span class="ico">🎚️</span><h3>Password generator</h3>
+        <p>Random generation with proper shuffling — no predictable character-class placement.</p></div>
+      <div class="card"><span class="ico">🛡️</span><h3>Security dashboard</h3>
+        <p>Hygiene audit for weak, reused and breached passwords, with Have I Been Pwned k-anonymity checks that never send your password.</p></div>
+      <div class="card"><span class="ico">🔄</span><h3>Offline-first sync</h3>
+        <p>Read and edit locally, sync when you're back. Revision-conflict aware, with atomic password changes that revoke other sessions.</p></div>
+      <div class="card"><span class="ico">👆</span><h3>Biometrics</h3>
+        <p>Hardware-backed (TEE/StrongBox) key wrapping released only after BiometricPrompt; optional face unlock with an explicit warning.</p></div>
+      <div class="card"><span class="ico">🔒</span><h3>Session control</h3>
+        <p>See every signed-in device, sign out others in one tap, and read a full security activity log inside the app.</p></div>
+      <div class="card"><span class="ico">🚫</span><h3>No account debris</h3>
+        <p>No analytics, no ads, no trackers, no cloud backups of vault material, no plaintext exports.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="security">
+  <div class="wrap">
+    <h2>Security model</h2>
+    <p class="sub">Zero-knowledge isn't a marketing word here — it's the architecture.</p>
+    <ul class="sec-list">
+      <li><strong>Keys never leave the device.</strong> Your master password is stretched with Argon2id (3 passes, 32&nbsp;MiB, 4 lanes) — or PBKDF2-SHA256 at 600,000 iterations for legacy accounts, with an automatic on-unlock migration to the current default.</li>
+      <li><strong>Independent sub-keys.</strong> HKDF splits the master key into auth and enc sub-keys; the server only ever sees a SHA-256 hash of the auth key, so unlock works offline.</li>
+      <li><strong>AES-256-GCM vault blobs</strong>, bound to your account id and server revision as additional data — rolled-back or foreign blobs fail to decrypt.</li>
+      <li><strong>Atomic changes.</strong> Password change and KDF migration re-encrypt and commit verifier + blob in one server transaction, and password change revokes every other session.</li>
+      <li><strong>Fail-closed server.</strong> The API refuses to start without its HMAC pepper; rate limits guard sign-in and password change; every sensitive event lands in an audit log you can read in the app.</li>
+      <li><strong>Transport and UI hardening.</strong> Certificate pinning (leaf, intermediate and ISRG Root X1), FLAG_SECURE in release builds, clipboard auto-clear, and <code>allowBackup=false</code> so nothing lands in cloud backups.</li>
+      <li><strong>Open source.</strong> Apache-2.0. Every line of the app's crypto path is in
+      this repository — Argon2id/PBKDF2, HKDF, AES-GCM, the autofill service and the sync client.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="screenshots">
+  <div class="wrap">
+    <h2>Screenshots</h2>
+    <p class="sub">Captured from the debug build — the release build blocks screenshots by design.</p>
+    <div class="shots">
+      <img src="images/shot-1.png" alt="Vault list">
+      <img src="images/shot-2.png" alt="Entry editor">
+      <img src="images/shot-3.png" alt="Authenticator">
+      <img src="images/shot-4.png" alt="Security dashboard">
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <div class="dl">
+      <h2>Get CipherVault</h2>
+      <p class="sub">Signed release APK, straight from GitHub. Verify the checksum, install, and your vault is yours.</p>
+      <div class="btns">
+        <a class="btn btn-primary" style="background:#fff;color:var(--green-dark)"
+           href="https://github.com/swapnashu/ciphervault/releases/latest/download/CipherVault-0.1.0-release.apk">Download v0.1.0 APK</a>
+        <a class="btn btn-ghost" style="border-color:#9FC4B4;color:#fff"
+           href="https://github.com/swapnashu/ciphervault/releases">All releases</a>
+      </div>
+      <div class="meta">
+        <div><b>15.5 MB</b>APK size</div>
+        <div><b>Android 8.0+</b>minSdk 26</div>
+        <div><b>SHA-256</b><code>7910bb1d2bcf1905cc4051d088a8aaef11b5a53c99a440ad26a9ac2d51650982</code></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <h2>Privacy policy</h2>
+    <p class="sub">Effective date: 16 October 2026. Plain language, no lawyer fog.</p>
+    <div class="privacy">
+      <h3>Summary</h3>
+      <p>CipherVault is a zero-knowledge password manager. Your vault contents are encrypted on your
+      device before they are sent to our server. We cannot read your passwords, notes, cards or
+      authenticator secrets, and we cannot recover your master password for you.</p>
+
+      <h3>Data we store</h3>
+      <table>
+        <tr><th>Data</th><th>Why</th><th>Where</th></tr>
+        <tr><td>Email address</td><td>Account identity, sign-in</td><td>Server database</td></tr>
+        <tr><td>Password verifier (a hash derived from your master password)</td><td>Proves your password at sign-in without transmitting it</td><td>Server database</td></tr>
+        <tr><td>Encrypted vault blob and its revision number</td><td>Sync between your devices</td><td>Server database</td></tr>
+        <tr><td>KDF parameters and salt</td><td>Key derivation on your devices</td><td>Server database</td></tr>
+        <tr><td>Session records (issue time, device name, last activity)</td><td>“Sign out other devices” and session management</td><td>Server database</td></tr>
+        <tr><td>Security audit events (sign-in success/failure, sync, password or KDF changes, timestamps, IP address, coarse device name)</td><td>Abuse detection and the in-app Security activity log</td><td>Server database</td></tr>
+        <tr><td>Rate-limit counters keyed by IP</td><td>Prevent brute force</td><td>Server memory/database</td></tr>
+      </table>
+      <p>We do not collect contacts, location, advertising identifiers, or usage analytics. There are
+      no third-party analytics, advertising or tracking SDKs. QR barcode scanning for two-factor
+      secrets happens entirely on the device; scanned data is never uploaded.</p>
+
+      <h3>What we cannot see</h3>
+      <p>Vault items are encrypted with a key derived from your master password using Argon2id (or
+      PBKDF2-SHA256 for older accounts). The server stores ciphertext only. Anyone who obtains a copy
+      of the database still cannot read your vault without your master password.</p>
+
+      <h3>Sessions and revocation</h3>
+      <p>Changing your master password re-encrypts the vault and signs out every other device. The
+      Settings screen lists active sessions and lets you sign out other devices at any time.</p>
+
+      <h3>Data retention</h3>
+      <p>Accounts and their server-side data are retained while the account exists. Deleting the app
+      does not delete the server account; contact the operator to request account deletion. Security
+      audit events are retained for the account's lifetime so the in-app activity log stays accurate.</p>
+
+      <h3>Security</h3>
+      <p>Data in transit is protected by TLS with certificate pinning in the app. Vault blobs are
+      authenticated with AES-256-GCM bound to your account id and revision number. Release builds
+      block screenshots, and copied secrets are cleared from the clipboard after a short timeout.</p>
+
+      <h3>Children</h3>
+      <p>The app is not directed at children under 13 (or the minimum age required in your jurisdiction).</p>
+
+      <h3>Changes</h3>
+      <p>Material changes to this policy will be reflected here with an updated effective date.</p>
+
+      <h3>Contact</h3>
+      <p>Operator: <a href="https://github.com/swapnashu">swapnashu</a> —
+      open an issue on <a href="https://github.com/swapnashu/ciphervault">GitHub</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details>
+        <summary>What if I forget my master password?</summary>
+        <p>Nobody can recover it — including us. That is the direct consequence of a server that
+        cannot decrypt your vault. Write your master password down and store it somewhere physical.</p>
+      </details>
+      <details>
+        <summary>Does the app work offline?</summary>
+        <p>Yes. Unlocking and reading your vault are fully offline; changes sync when you're back online.</p>
+      </details>
+      <details>
+        <summary>Can I self-host the server?</summary>
+        <p>The Android app is fully open source in this repository. Hosted accounts use the
+        CipherVault sync API operated by the project; the app talks to any compatible endpoint.</p>
+      </details>
+      <details>
+        <summary>Why isn't CipherVault on F-Droid?</summary>
+        <p>F-Droid's anti-features policy rejects the ML Kit on-device barcode model used for QR
+        scanning. The core vault contains no third-party SDKs.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 CipherVault · Apache-2.0 · Built with Kotlin, Compose &amp; Flask</span>
+    <span><a href="https://github.com/swapnashu/ciphervault">GitHub</a> ·
+          <a href="https://github.com/swapnashu/ciphervault/releases">Releases</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Release strict default: no cleartext HTTP, ever. Debug builds carry their
+     own res/xml/network_security_config.xml (debug source set) that permits
+     cleartext only to the emulator's host alias 10.0.2.2 for local testing. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

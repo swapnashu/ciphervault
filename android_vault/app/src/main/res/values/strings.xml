@@ -1,0 +1,150 @@
+<resources>
+    <string name="app_name">CipherVault</string>
+    <string name="lock_title">Vault locked</string>
+    <string name="lock_hint">Enter master password</string>
+    <string name="unlock">Unlock</string>
+    <string name="use_biometrics">Use biometrics</string>
+    <string name="lock_biometric_hint">To use your fingerprint or face to unlock, first unlock with your master password, then turn it on in Menu → Settings.</string>
+    <string name="biometric_prompt_title">Unlock your vault</string>
+    <string name="biometric_prompt_subtitle">Confirm it\'s you</string>
+    <string name="biometric_prompt_cancel">Use password</string>
+    <string name="autofill_service_warning">Enable CipherVault in Settings → System → Autofill to fill passwords in other apps.</string>
+    <string name="autofill_service_name">CipherVault</string>
+    <string name="autofill_service_description">Fills logins from your encrypted vault.</string>
+    <string name="autofill_dialog_title">Autofill logins</string>
+    <string name="autofill_save_locked">Unlock CipherVault to save this password</string>
+    <string name="autofill_save_failed">Could not save this login to your vault</string>
+    <string name="autofill_saved">Saved to CipherVault</string>
+    <string name="autofill_enabled">Enabled</string>
+    <string name="autofill_disabled">Not enabled</string>
+    <string name="autofill_lock_note">Logins are offered only while your vault is unlocked. Locking CipherVault clears it from memory.</string>
+    <string name="autofill_open_settings">Turn on autofill</string>
+    <string name="clipboard_cleared">Clipboard cleared</string>
+    <string name="copied">Copied</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="totp_code">Verification code</string>
+    <string name="add_entry">Add entry</string>
+    <string name="search_hint">Search vault</string>
+    <string name="generate">Generate</string>
+    <string name="empty_vault">Your vault is empty</string>
+    <string name="sync_failed">Sync failed. Changes saved locally.</string>
+
+    <!-- Navigation drawer -->
+    <string name="nav_menu">Open menu</string>
+    <string name="nav_lock">Lock vault</string>
+    <string name="nav_vault">Vault</string>
+    <string name="nav_zero_knowledge">End-to-end encrypted</string>
+    <string name="nav_all">All items</string>
+    <string name="nav_logins">Logins</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_2fa">Two-factor</string>
+    <string name="nav_notes">Secure notes</string>
+    <string name="nav_cards">Cards</string>
+    <string name="nav_identity">Identity</string>
+    <string name="nav_authenticator">Authenticator</string>
+    <string name="nav_scan">Scan QR code</string>
+    <string name="nav_security">Security</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Vault list -->
+    <string name="vault_search">Search vault</string>
+    <string name="vault_favorites">Favorites</string>
+    <string name="vault_all_items">All items</string>
+    <string name="vault_empty_title">Your vault is empty</string>
+    <string name="vault_empty_body">Tap + to add your first login, note or card.</string>
+    <string name="vault_no_results">No matches for “%1$s”</string>
+    <string name="vault_search_hint">Search covers title, username, URL, folder and notes.</string>
+    <string name="vault_error_retry">Retry</string>
+    <string name="vault_unavailable_title">Vault not loaded yet</string>
+    <string name="vault_unavailable_body">Your entries appear once the server responds. Tap Retry above to try again.</string>
+
+    <!-- QR scanner -->
+    <string name="scan_title">Scan a QR code</string>
+    <string name="scan_hint">Point the camera at the two-factor QR code shown by the service you are securing.</string>
+    <string name="scan_manual">Enter secret manually</string>
+    <string name="scan_permission_title">Camera access is needed</string>
+    <string name="scan_permission_body">CipherVault uses the camera only to read an authenticator QR code. Nothing is recorded, photographed or uploaded.</string>
+    <string name="scan_permission_allow">Allow camera</string>
+    <string name="scan_open_app_settings">Open app settings</string>
+
+    <!-- Authenticator -->
+    <string name="authenticator_subtitle">Codes for %1$d of your items. Tap to copy.</string>
+    <string name="authenticator_copied">Copied code for %1$s</string>
+    <string name="authenticator_clipboard_label">verification code</string>
+    <string name="authenticator_seconds">%1$ds</string>
+    <string name="authenticator_empty_title">No two-factor codes yet</string>
+    <string name="authenticator_empty_body">Add a 2FA secret to any item and its live code appears here, ready to copy.</string>
+    <string name="authenticator_scan_cta">Scan a QR code</string>
+    <string name="authenticator_empty_cta">Add an item</string>
+
+    <!-- Security dashboard -->
+    <string name="security_findings">%1$d things worth fixing</string>
+    <string name="security_score_title">Vault health</string>
+    <string name="security_weak">Weak</string>
+    <string name="security_reused">Reused</string>
+    <string name="security_stale">Old</string>
+    <string name="security_no_2fa">No 2FA</string>
+    <string name="security_high">High</string>
+    <string name="security_medium">Medium</string>
+    <string name="security_low">Low</string>
+    <string name="security_all_clear">Nothing to fix</string>
+    <string name="security_all_clear_body">All %1$d items pass the checks CipherVault runs.</string>
+
+    <!-- Settings -->
+    <string name="settings_biometrics">Biometrics</string>
+    <string name="settings_biometric_unlock">Unlock with biometrics</string>
+    <string name="settings_biometric_confirm">Confirm with your biometric to finish.</string>
+    <string name="settings_biometric_note">Your encryption key is wrapped with a hardware-backed key stored only on this device. It can only be unwrapped after a fingerprint or face is confirmed. Your master password always works as a fallback.</string>
+    <string name="settings_allow_weak">Allow face unlock (less secure)</string>
+    <string name="settings_allow_weak_body">Some face unlocks are fooled by a photograph, so Android rates them below a fingerprint. Turning this on lets those unlock your vault. Turning it on or off re-arms biometric enrolment.</string>
+    <string name="settings_weak_reenrol">Biometric unlock was turned off. Turn it on again to re-enrol.</string>
+    <string name="settings_weak_confirm_title">Change face unlock setting?</string>
+    <string name="settings_weak_confirm_message">Changing this setting will disable your biometric unlock. You will need to re-enable it and re-enroll your face or fingerprint. Continue?</string>
+    <string name="settings_weak_confirm_ok">Yes, change it</string>
+    <string name="settings_weak_confirm_cancel">Cancel</string>
+    <string name="settings_autofill">Autofill</string>
+    <string name="settings_autofill_status">Status</string>
+    <string name="settings_autofill_change">Change autofill provider</string>
+    <string name="settings_clipboard">Clipboard</string>
+    <string name="settings_clipboard_body">Copied passwords and codes are wiped automatically after this long.</string>
+    <string name="settings_clipboard_never">Never clear</string>
+    <string name="settings_clipboard_seconds">Clear after %1$d seconds</string>
+    <string name="settings_session">Session</string>
+    <string name="settings_session_body">Locking clears your master key from memory. Anything still in the clipboard is wiped too.</string>
+    <string name="settings_lock_now">Lock vault now</string>
+
+    <!-- Settings: active sessions -->
+    <string name="settings_active_sessions">Active sessions</string>
+    <string name="settings_active_sessions_body">Devices currently signed in to your account. Signing out elsewhere ends those sessions; this device stays signed in.</string>
+    <string name="settings_sessions_unknown_device">Unknown device</string>
+    <string name="settings_sessions_current">This device</string>
+    <string name="settings_sessions_loading">Loading sessions…</string>
+    <string name="settings_sessions_empty">No sessions to show.</string>
+    <string name="settings_sessions_load_error">Couldn\'t load sessions. Check your connection and try again.</string>
+    <string name="settings_reload">Reload</string>
+    <string name="settings_sign_out_others">Sign out other devices</string>
+    <string name="settings_sign_out_others_busy">Signing out other devices…</string>
+    <string name="settings_signed_out_n">Signed out %1$d other sessions.</string>
+    <string name="settings_signed_out_none">No other sessions were signed in.</string>
+
+    <!-- Settings: security activity -->
+    <string name="settings_security_activity">Security activity</string>
+    <string name="settings_security_activity_body">Recent sign-ins, password changes and sync events for this account.</string>
+    <string name="settings_activity_loading">Loading activity…</string>
+    <string name="settings_activity_empty">No activity recorded yet.</string>
+    <string name="settings_activity_load_error">Couldn\'t load your security activity. Check your connection and try again.</string>
+
+    <!-- Settings: change master password -->
+    <string name="settings_change_password">Change master password</string>
+    <string name="settings_change_password_body">You\'ll need your current password. Every other device is signed out, and biometric unlock is turned off until you turn it on again.</string>
+    <string name="settings_current_password">Current password</string>
+    <string name="settings_new_password">New password</string>
+    <string name="settings_confirm_password">Confirm new password</string>
+    <string name="settings_password_mismatch">The new passwords don\'t match.</string>
+    <string name="settings_password_change_confirm">Change password</string>
+    <string name="settings_password_change_busy">Changing your password…</string>
+    <string name="settings_password_change_done">Master password changed. Other devices were signed out.</string>
+    <string name="settings_password_change_error">Couldn\'t change your password. Check your connection and try again.</string>
+    <string name="settings_cancel">Cancel</string>
+</resources>

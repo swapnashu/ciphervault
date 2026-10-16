@@ -1,0 +1,10 @@
+Initial release.
+
+- Zero-knowledge vault: Argon2id key derivation, AES-256-GCM encryption, sync
+  against a server that can only store ciphertext.
+- Passwords, usernames, URLs, notes and 2FA secrets in one vault.
+- Built-in TOTP authenticator with QR-code enrolment.
+- Password generator with strength meter.
+- Android autofill service and strong-biometric unlock.
+- Auto-lock after two minutes in the background, certificate pinning, and
+  screenshot/recording blocking.

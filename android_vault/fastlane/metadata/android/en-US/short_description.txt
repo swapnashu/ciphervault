@@ -1,0 +1,1 @@
+Zero-knowledge password manager - encrypted on your phone before it ever syncs.

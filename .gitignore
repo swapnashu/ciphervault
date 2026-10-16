@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+env/
+.env
+
+# Local data: the dev database and the PythonAnywhere backup copies must
+# never be published. The pepper is machine-local secret material - it
+# matches at any directory level (sellerbot/.vault_pepper too).
+vault.db
+_pa_backup/
+.vault_pepper
+
+# Signing material lives under android_vault/ and is ignored there too.
+*.keystore
+keystore.properties
+local.properties
+
+.idea/
+.vscode/
+*.iml
