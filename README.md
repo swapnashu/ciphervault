@@ -1,9 +1,9 @@
 # CipherVault
 
 [![Release](https://img.shields.io/github/v/release/swapnashu/ciphervault?style=flat-square&label=release&color=0B6B47)](https://github.com/swapnashu/ciphervault/releases/latest)
-[![License](https://img.shields.io/badge/license-Apache--2.0-flat-square&color=B08D1F)](LICENSE)
-[![Website](https://img.shields.io/badge/website-live-flat-square&color=0B6B47)](https://swapnashu.github.io/ciphervault/)
-[![Android](https://img.shields.io/badge/android-8.0%2B%20(API%2026)-flat-square&color=3DDC84)](https://github.com/swapnashu/ciphervault/releases/latest)
+[![License](https://img.shields.io/badge/license-Apache--2.0-B08D1F?style=flat-square)](LICENSE)
+[![Website](https://img.shields.io/badge/website-live-0B6B47?style=flat-square)](https://swapnashu.github.io/ciphervault/)
+[![Android](https://img.shields.io/badge/android-8.0%2B%20(API%2026)-3DDC84?style=flat-square)](https://github.com/swapnashu/ciphervault/releases/latest)
 
 **Zero-knowledge password manager for Android** — your vault is encrypted on
 the device before it ever reaches the server. Kotlin + Jetpack Compose,
