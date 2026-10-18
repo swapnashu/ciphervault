@@ -180,7 +180,36 @@ class VaultRepository(
      * @return the user id
      * @throws VaultApiException on 409 (email taken), 429 (rate limited), etc.
      */
-    suspend fun register(email: String, password: CharArray): Result<String> = register(email, password, Kdf.Params())
+    suspend fun register(email: String, password: CharArray): Result<String> = withContext(Dispatchers.IO) {
+        register(email, password, registrationParams())
+    }
+
+    /**
+     * KDF parameters for a *new* registration, chosen from what the server
+     * advertises rather than what the app prefers.
+     *
+     * A health default that is a PBKDF2 round count (>= [Kdf.MIN_PBKDF2_ITERATIONS])
+     * means a pre-Argon2 deployment: it validates every submitted iteration count
+     * against the PBKDF2 floor unconditionally, so the Argon2id default (3 passes)
+     * would be rejected with `'kdf.iterations' is too low`. Registering those
+     * accounts at the PBKDF2 default keeps them usable against such a server;
+     * once it advertises a memory-hard default, [maybeMigrate] upgrades them on
+     * the next unlock, exactly like any other pre-Argon2 install.
+     *
+     * A health failure means the register call is about to fail anyway — fall
+     * through to the modern defaults and let the real error surface there.
+     */
+    internal suspend fun registrationParams(): Kdf.Params {
+        val advertised = runCatching { api.health().unwrapOrThrow().kdfDefaultIterations }.getOrNull()
+        return if (advertised != null && advertised >= Kdf.MIN_PBKDF2_ITERATIONS) {
+            Kdf.Params(
+                algorithm = Kdf.Params.Algorithm.PBKDF2_SHA256,
+                iterations = Kdf.DEFAULT_ITERATIONS,
+            )
+        } else {
+            Kdf.Params()
+        }
+    }
 
     /**
      * Test-only overload allowing injection of fast KDF parameters.
