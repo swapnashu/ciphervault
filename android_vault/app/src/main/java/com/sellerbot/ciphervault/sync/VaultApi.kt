@@ -247,10 +247,21 @@ class VaultApiException(
                 }
             }
 
+            val message = if (parsed?.error == "not_found") {
+                // Old server deployments simply don't have the newer routes
+                // (audit log, change-password, migrate-kdf, revoke-others).
+                // A raw "No such endpoint" would read like a bug, so every
+                // such 404 is reported as the server being out of date — the
+                // deploy, not the client, is what makes these work.
+                "Not supported by this server yet. Update the server, then try again."
+            } else {
+                parsed?.message ?: "Request failed (HTTP $code)"
+            }
+
             return VaultApiException(
                 code = code,
                 error = parsed?.error ?: "http_$code",
-                message = parsed?.message ?: "Request failed (HTTP $code)",
+                message = message,
             )
         }
     }
