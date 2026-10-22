@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "CipherVault",
+  "version": "1.0.0",
+  "description": "Zero-knowledge password vault add-on: fill and save logins with your CipherVault master password.",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["https://sellerbots.pythonanywhere.com/*"],
+  "background": { "service_worker": "common/background.js" },
+  "action": {
+    "default_title": "CipherVault",
+    "default_popup": "common/popup.html",
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["common/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

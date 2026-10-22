@@ -1,0 +1,98 @@
+:root {
+  --green-dark: #0B6B47;
+  --green: #0f8f5f;
+  --gold: #B08D1F;
+  --bg: #f6f8f7;
+  --ink: #12241d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 340px;
+  margin: 0;
+  padding: 10px 12px 8px;
+  font: 13px/1.45 system-ui, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 2px 10px;
+}
+header img { width: 22px; height: 22px; }
+header b { color: var(--green-dark); flex: none; }
+#state-hint { margin-left: auto; color: #66706b; font-size: 11px; }
+
+.row { margin-bottom: 8px; }
+input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #c9d4cf;
+  border-radius: 8px;
+  font-size: 13px;
+  background: #fff;
+}
+input:focus { outline: 2px solid var(--green); border-color: var(--green); }
+
+button {
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+button.primary { background: var(--green-dark); color: #fff; width: 100%; }
+button.primary:hover { background: var(--green); }
+button.ghost {
+  background: transparent;
+  color: var(--green-dark);
+  border: 1px solid #b9cec5;
+}
+button.small { padding: 4px 10px; font-size: 12px; }
+#btn-save { width: auto; flex: 1; }
+#btn-discard { width: auto; flex: 1; }
+.btns { display: flex; gap: 8px; margin-top: 8px; }
+
+.error { color: #b3261e; margin: 6px 0 0; }
+.hint { color: #66706b; font-size: 11.5px; margin: 8px 0 0; }
+.mono { font-family: ui-monospace, Consolas, monospace; font-size: 11.5px; }
+
+.save-banner {
+  background: #fff;
+  border: 1px solid #c9d4cf;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+.save-banner input { margin-top: 8px; }
+
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #c9d4cf;
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+.entry .who { flex: 1 1 auto; min-width: 0; }
+.entry .who b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.entry .who span { display: block; color: #57645d; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.entry button { flex: none; background: var(--green-dark); color: #fff; padding: 6px 12px; }
+.entry button:hover { background: var(--green); }
+
+footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 6px;
+  color: #8a958f;
+  font-size: 11px;
+}
+footer .spacer { flex: 1; }
+.muted { color: #9fa8a2; }
