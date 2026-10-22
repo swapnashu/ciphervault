@@ -53,7 +53,7 @@ async function login() {
   btn.disabled = false;
   $("login-password").value = "";
   if (res && res.ok) {
-    email.value = "";
+    $("login-email").value = "";
     return renderTab();
   }
   err.textContent = res.error || "Sign-in failed.";
