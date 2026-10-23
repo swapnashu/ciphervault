@@ -24,6 +24,9 @@ function cwB64encode(bytes) {
 }
 
 function cwB64decode(text) {
+  if (typeof text !== "string" || text.length > 28_000_000) {
+    throw new Error("base64 payload out of range");
+  }
   const raw = atob(text);
   const out = new Uint8Array(raw.length);
   for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
@@ -41,8 +44,8 @@ function cwConcat(...arrays) {
 
 /** PBKDF2-SHA256, password encoded as UTF-8 exactly like the Android app/tests. */
 async function cvDeriveMaster(password, saltBytes, iterations) {
-  if (iterations < 100000) {
-    throw new Error("KDF iterations too low");
+  if (iterations < 100000 || iterations > 10000000) {
+    throw new Error("KDF iterations out of accepted range");
   }
   const baseKey = await crypto.subtle.importKey(
     "raw", CWE.encode(password), "PBKDF2", false, ["deriveBits"],

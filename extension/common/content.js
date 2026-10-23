@@ -54,21 +54,23 @@
   async function maybeCapture() {
     const now = Date.now();
     if (now - cvLastCaptured < 1500) return;
+    if (!/^https?:$/i.test(location.protocol)) return; // capture on the web only
     const { username, password } = findLoginFields();
     if (!password || !password.value || password.value.length < 4) return;
-    if (document.querySelectorAll("input[type=password]:not([type=hidden])").length > 1) {
+    if (document.querySelectorAll(
+      "input[type=password]:not([type=hidden])").length > 1) {
       // More than one password box looks like sign-up or change-password — skip.
       return;
     }
     const name = username && username.value ? username.value.trim() : "";
-    if (!name) return;
+    if (!name || name.length > 320) return;
     cvLastCaptured = now;
     try {
       await chrome.runtime.sendMessage({
         cmd: "submitDetected",
-        username: name,
-        password: password.value,
-        url: location.href,
+        username: name.slice(0, 320),
+        password: password.value.slice(0, 1000),
+        url: location.href.slice(0, 2000),
         tabId: null,
       });
     } catch { /* extension context invalidated (reload) — ignore */ }
@@ -88,19 +90,27 @@
     }
   }, true);
 
-  // Fill on request from the popup.
+  // Fill on request from the popup (optionally also a TOTP one-time code).
   chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
     if (!msg || msg.cmd !== "cvFill") return;
     (async () => {
+      const clean = (v) => (typeof v === "string" ? v.slice(0, 2000) : "");
       const fields = findLoginFields();
       let filled = 0;
-      if (msg.username && fields.username) {
-        setNativeValue(fields.username, msg.username);
+      if (clean(msg.username) && fields.username) {
+        setNativeValue(fields.username, clean(msg.username));
         filled++;
       }
-      if (msg.password && fields.password) {
-        setNativeValue(fields.password, msg.password);
+      if (typeof msg.password === "string" && msg.password && fields.password) {
+        setNativeValue(fields.password, msg.password.slice(0, 1000));
         filled++;
+      }
+      if (typeof msg.totp === "string" && /^\d{4,10}$/.test(msg.totp)) {
+        const otp = findOtpField();
+        if (otp) {
+          setNativeValue(otp, msg.totp);
+          filled++;
+        }
       }
       if (fields.password) {
         try { fields.password.focus({ preventScroll: false }); } catch {}
@@ -109,4 +119,16 @@
     })();
     return true;
   });
+
+  function findOtpField() {
+    const otp = document.querySelector(
+      'input[autocomplete="one-time-code" i]',
+    );
+    if (otp && otp.offsetParent !== null && !otp.disabled && !otp.readOnly) return otp;
+    return Array.from(
+      document.querySelectorAll("input[type=text], input[type=tel], input[type=number]"),
+    ).find((el) =>
+      fieldMatches(el, ["totp", "otp", "one-time-code", "one-time code", "verification code"]) &&
+      el.offsetParent !== null && !el.disabled && !el.readOnly) || null;
+  }
 })();

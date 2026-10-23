@@ -200,14 +200,16 @@
 <section id="addon">
   <div class="wrap">
     <h2>Browser add-on</h2>
-    <p class="sub">Fill and save the logins of the vault in your browser — Chrome, Edge, Brave or
-    Firefox — with the same zero-knowledge keys as the app. The add-on never holds your master
-    password, only the derived keys, and its session dies when the browser closes.</p>
+    <p class="sub">Fill logins, edit your entire vault, search it, generate strong
+    passwords and watch one-time codes tick down — Chrome, Edge, Brave or Firefox,
+    with the same zero-knowledge keys as the app. The add-on never holds your master
+    password, only the derived keys; sessions auto-lock after 15 idle minutes and die
+    when the browser closes.</p>
     <div class="btns" style="margin-bottom:28px">
       <a class="btn btn-ghost" style="color:var(--green-dark);border-color:#B9CEC5"
-         href="https://github.com/swapnashu/ciphervault/releases/download/addon-v1.0.0/ciphervault-addon-1.0.0-chromium.zip">Chrome / Edge / Brave zip</a>
+         href="https://github.com/swapnashu/ciphervault/releases/download/addon-v1.1.0/ciphervault-addon-1.1.0-chromium.zip">Chrome / Edge / Brave zip</a>
       <a class="btn btn-ghost" style="color:var(--green-dark);border-color:#B9CEC5"
-         href="https://github.com/swapnashu/ciphervault/releases/download/addon-v1.0.0/ciphervault-addon-1.0.0-firefox.zip">Firefox zip</a>
+         href="https://github.com/swapnashu/ciphervault/releases/download/addon-v1.1.0/ciphervault-addon-1.1.0-firefox.zip">Firefox zip</a>
     </div>
     <div class="grid">
       <div class="card"><span class="ico">1️⃣</span><h3>Unzip &amp; load</h3>
@@ -217,15 +219,20 @@
         Temporary Add-on…</em> and pick <code>manifest.json</code>.</p></div>
       <div class="card"><span class="ico">2️⃣</span><h3>Sign in with your master password</h3>
         <p>The add-on derives the app&#8217;s exact PBKDF2&nbsp;→&nbsp;HKDF keys and pulls your encrypted
-        vault. Click <em>Fill</em> on an entry and it types username + password straight into the
-        page&#8217;s login form — including React-managed inputs.</p></div>
-      <div class="card"><span class="ico">3️⃣</span><h3>Save new logins from pages</h3>
+        vault. Create, edit or delete any entry type — logins, notes, cards, identities, TOTP —
+        with custom fields, favourites, live search and a 32-character password generator; every
+        value is validated and clamped on the trusted side.</p></div>
+      <div class="card"><span class="ico">3️⃣</span><h3>Save new logins and fill one-time codes</h3>
         <p>Submit a login form that isn&#8217;t saved yet and the add-on raises a
         &#8220;Save this login?&#8221; banner — it merges the new entry into your vault and pushes it,
-        revision-safe like every other CipherVault client.</p></div>
-      <div class="card"><span class="ico">ℹ️</span><h3>Scope of v1</h3>
-        <p>Login fill/save only. Vault editing stays in the app. Argon2id accounts (post-migration)
-        show a friendly pointer to unlock in the app first, because browser WebCrypto has no Argon2.</p></div>
+        revision-safe like every other CipherVault client. Entries with a TOTP seed show a live
+        chip in the list and a countdown in the viewer, and Fill types the current code into
+        <code>autocomplete="one-time-code"</code> fields.</p></div>
+      <div class="card"><span class="ico">ℹ️</span><h3>Scope of v1.1</h3>
+        <p>The full vault in the browser: every entry type, editors, search, generator and TOTP,
+        signed in as a &#8220;CipherVault Addon&#8221; device. Argon2id accounts (post-migration)
+        still show a friendly pointer to unlock in the app first, because browser WebCrypto has
+        no Argon2.</p></div>
     </div>
   </div>
 </section>

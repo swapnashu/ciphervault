@@ -18,10 +18,14 @@ CHROMIUM = os.path.join(DIST, "chromium")
 FIREFOX = os.path.join(DIST, "firefox")
 
 COMMON_FILES = [
-    "crypto.js", "api.js", "domains.js", "background.js",
+    "crypto.js", "api.js", "domains.js", "totp.js", "background.js",
     "content.js", "popup.html", "popup.css", "popup.js",
 ]
 
+# Chromium MV3: an additionally-named copy of the service worker script. Some
+# Chrome builds lazily cache SW script bodies for --load-extension reinstalls,
+# so the shipped filename is bumped along with the version to force re-fetch.
+CHROMIUM_SW_SCRIPT = "bg.js"
 
 def build(target, manifest_name):
     if os.path.isdir(target):
@@ -30,10 +34,18 @@ def build(target, manifest_name):
     os.makedirs(os.path.join(target, "icons"))
     for name in COMMON_FILES:
         shutil.copy2(os.path.join(COMMON, name), os.path.join(target, "common", name))
-    for name in ("16.png", "32.png", "48.png", "128.png"):
-        shutil.copy2(os.path.join(ICONS, name), os.path.join(target, "icons", name))
     with open(os.path.join(HERE, manifest_name), encoding="utf-8") as fh:
         manifest = json.load(fh)
+    sw_path = manifest.get("background", {}).get("service_worker")
+    if sw_path:
+        # copy the SW script also under CHROMIUM_SW_SCRIPT and point the
+        # manifest there (cache-busting name)
+        src = os.path.join(target, sw_path)
+        dst = os.path.join(target, "common", CHROMIUM_SW_SCRIPT)
+        shutil.copy2(src, dst)
+        manifest["background"]["service_worker"] = "common/" + CHROMIUM_SW_SCRIPT
+    for name in ("16.png", "32.png", "48.png", "128.png"):
+        shutil.copy2(os.path.join(ICONS, name), os.path.join(target, "icons", name))
     with open(os.path.join(target, "manifest.json"), "w", encoding="utf-8", newline="\n") as fh:
         json.dump(manifest, fh, indent=2, ensure_ascii=False)
         fh.write("\n")

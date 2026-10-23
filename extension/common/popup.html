@@ -2,6 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none';">
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
@@ -11,36 +13,96 @@
     <span id="state-hint"></span>
   </header>
 
-  <!-- 1. Signed out -->
+  <!-- 1. Locked -->
   <div id="screen-login" hidden>
     <div class="row">
-      <input id="login-email" type="email" placeholder="Email" autocomplete="off" spellcheck="false">
+      <input id="login-email" type="email" placeholder="Email" autocomplete="off" autocapitalize="off" spellcheck="false">
     </div>
     <div class="row">
-      <input id="login-password" type="password" placeholder="Master password">
+      <input id="login-password" type="password" placeholder="Master password" autocomplete="off" spellcheck="false">
     </div>
-    <button id="btn-login" class="primary">Sign in</button>
+    <button id="btn-login" class="primary">Unlock</button>
     <p id="login-error" class="error" hidden></p>
-    <p class="hint">Session stays in browser memory only — it clears when the browser closes.</p>
+    <p class="hint">Session stays in browser memory only — it clears when the browser closes or auto-locks.</p>
   </div>
 
-  <!-- 2. Save banner -->
+  <!-- 2. Entry lists: this site | whole vault -->
+  <div id="screen-entries" hidden>
+    <div class="tabs">
+      <button id="tab-site" class="tab on">This site</button>
+      <button id="tab-vault" class="tab">Vault</button>
+      <button id="btn-new" class="ghost small new" title="Add entry">+</button>
+    </div>
+    <div class="row-title">
+      <input id="search" type="search" placeholder="Filter by name…" autocomplete="off" spellcheck="false" hidden>
+    </div>
+    <div id="site-list"></div>
+    <div id="vault-list" hidden></div>
+    <p id="entries-none" class="hint" hidden></p>
+  </div>
+
+  <!-- 3. Editor (add/edit any entry type) -->
+  <div id="screen-editor" hidden>
+    <div class="row">
+      <select id="ed-type">
+        <option value="LOGIN">Login</option>
+        <option value="NOTE">Note</option>
+        <option value="CARD">Card</option>
+        <option value="IDENTITY">Identity</option>
+        <option value="TOTP">Authenticator seed</option>
+      </select>
+    </div>
+    <div class="row"><input id="ed-title" type="text" placeholder="Name" maxlength="200" autocomplete="off" spellcheck="false"></div>
+    <div class="row login-only"><input id="ed-username" type="text" placeholder="Username" maxlength="320" autocomplete="off" spellcheck="false"></div>
+    <div class="row login-only field-combo">
+      <input id="ed-password" type="password" placeholder="Password" autocomplete="off" spellcheck="false">
+      <button id="btn-reveal" class="ghost small iconbtn" title="Show / hide">👁</button>
+      <button id="btn-generate" class="ghost small" title="Generate a strong password">⚡ 32</button>
+    </div>
+    <div class="row login-only"><input id="ed-url" type="url" placeholder="https://example.com" maxlength="2000" spellcheck="false"></div>
+    <div class="row totp-only"><input id="ed-totp-secret" type="text" placeholder="TOTP secret (Base32), optional" maxlength="220" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+    <div class="row totp-only totp-params">
+      <select id="ed-totp-algo">
+        <option value="SHA1">SHA-1 (legacy)</option>
+        <option value="SHA256">SHA-256</option>
+        <option value="SHA512">SHA-512</option>
+      </select>
+      <input id="ed-totp-digits" type="number" min="6" max="10" placeholder="6">
+      <input id="ed-totp-period" type="number" min="1" max="120" placeholder="30">
+    </div>
+    <div class="row"><textarea id="ed-notes" rows="2" placeholder="Notes" maxlength="10000" spellcheck="false"></textarea></div>
+    <div id="ed-fields"></div>
+    <button id="btn-add-field" class="ghost small">+ custom field</button>
+    <label class="fav"><input id="ed-favorite" type="checkbox"> Favorite</label>
+    <div class="btns">
+      <button id="btn-edit-save" class="primary">Save</button>
+      <button id="btn-edit-cancel" class="ghost">Cancel</button>
+    </div>
+    <button id="btn-edit-delete" class="ghost small danger" hidden>Delete</button>
+    <p id="editor-error" class="error" hidden></p>
+  </div>
+
+  <!-- 4. Viewer (quick view + copy, live TOTP) -->
+  <div id="screen-viewer" hidden>
+    <div id="viewer-body"></div>
+    <div class="btns">
+      <button id="btn-view-edit" class="primary">Edit</button>
+      <button id="btn-view-back" class="ghost">Back</button>
+    </div>
+    <button id="btn-view-delete" class="ghost small danger">Delete</button>
+  </div>
+
+  <!-- 5. Save banner -->
   <div id="screen-save" hidden>
     <div class="save-banner">
       <div><b>Save this login?</b></div>
       <div id="save-summary" class="mono"></div>
-      <input id="save-title" type="text" placeholder="Name (defaults to the site)">
+      <input id="save-title" type="text" placeholder="Name (defaults to the site)" maxlength="200" autocomplete="off" spellcheck="false">
       <div class="btns">
         <button id="btn-save" class="primary">Save</button>
         <button id="btn-discard" class="ghost">Ignore</button>
       </div>
     </div>
-  </div>
-
-  <!-- 3. Entry list for this site -->
-  <div id="screen-entries" hidden>
-    <div id="entries-list"></div>
-    <p id="entries-none" class="hint" hidden></p>
   </div>
 
   <footer>
@@ -51,6 +113,7 @@
   </footer>
 
   <script src="crypto.js"></script>
+  <script src="totp.js"></script>
   <script src="api.js"></script>
   <script src="domains.js"></script>
   <script src="popup.js"></script>

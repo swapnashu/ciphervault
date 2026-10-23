@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-B08D1F?style=flat-square)](LICENSE)
 [![Website](https://img.shields.io/badge/website-live-0B6B47?style=flat-square)](https://swapnashu.github.io/ciphervault/)
 [![Android](https://img.shields.io/badge/android-8.0%2B%20(API%2026)-3DDC84?style=flat-square)](https://github.com/swapnashu/ciphervault/releases/latest)
-[![Add-on](https://img.shields.io/github/v/release/swapnashu/ciphervault?include_prereleases&filter=addon*&style=flat-square&label=add-on&color=B08D1F)](https://github.com/swapnashu/ciphervault/releases/tag/addon-v1.0.0)
+[![Add-on](https://img.shields.io/github/v/release/swapnashu/ciphervault?include_prereleases&filter=addon*&style=flat-square&label=add-on&color=B08D1F)](https://github.com/swapnashu/ciphervault/releases/tag/addon-v1.1.0)
 
 **Zero-knowledge password manager for Android — plus a browser add-on**
 for Chrome, Edge, Brave and Firefox. Your vault is encrypted on the device
@@ -38,13 +38,18 @@ open source (Apache-2.0).
 
 ## Browser add-on
 
-Fill and save vault logins in the browser with the same zero-knowledge
-protocol. The add-on keeps only derived keys in browser memory
-(`storage.session`, cleared on exit), fills login forms app-style, and
-captures + merges new logins with the app-server revision scheme.
+Fill and save vault logins, browse and **edit your whole vault** (logins,
+notes, cards, identities, TOTP — add / edit / delete with custom fields),
+search it, generate strong passwords, and get **live TOTP codes** (list
+chips, a viewer with countdown, and one-time-code form filling) — all with
+the same zero-knowledge protocol. The add-on keeps only derived keys in
+browser memory (`storage.session`, auto-locked after 15 idle minutes,
+cleared on exit), fills login forms app-style, and captures + merges new
+logins with the app-server revision scheme. Entry fields are validated and
+clamped on the trusted side.
 
 Details and install steps: [`extension/README.md`](extension/README.md) ·
-[zips (addon-v1.0.0)](https://github.com/swapnashu/ciphervault/releases/tag/addon-v1.0.0).
+[zips (addon-v1.1.0)](https://github.com/swapnashu/ciphervault/releases/tag/addon-v1.1.0).
 
 ## Security model
 
