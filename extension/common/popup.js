@@ -87,7 +87,7 @@ function renderSiteList(data) {
   }
   $("entries-none").hidden = true;
   for (const entry of matched) {
-    list.append(entryRow({
+    const row = entryRow({
       icon: "🔑",
       title: entry.title || "",
       sub: entry.username || "",
@@ -98,15 +98,15 @@ function renderSiteList(data) {
         fill.style.cssText = "flex:none;background:#0B6B47;color:#fff;border:0;border-radius:8px;padding:6px 12px;cursor:pointer;";
         fill.addEventListener("click", async (ev) => {
           ev.stopPropagation();
-  let totp = null;
-  if ((entry.totpSecret || "").trim()) {
-    try {
-      totp = await cvTotp(
-        cvBase32Decode(entry.totpSecret), Math.floor(Date.now() / 1000),
-        entry.totpDigits, entry.totpPeriodSeconds, entry.totpAlgorithm,
-      );
-    } catch { totp = null; }
-  }
+          let totp = null;
+          if ((entry.totpSecret || "").trim()) {
+            try {
+              totp = await cvTotp(
+                cvBase32Decode(entry.totpSecret), Math.floor(Date.now() / 1000),
+                entry.totpDigits, entry.totpPeriodSeconds, entry.totpAlgorithm,
+              );
+            } catch { totp = null; }
+          }
           try {
             await chrome.tabs.sendMessage(tabInfo.id, {
               cmd: "cvFill",
@@ -121,7 +121,14 @@ function renderSiteList(data) {
         });
         tail.append(fill);
       },
-    }));
+    });
+    // live TOTP chip beside Fill — the entries payload already carries the seed
+    const seed = (entry.totpSecret || "").trim();
+    if (seed) {
+      const tl = row.querySelector(".tail");
+      if (tl) tl.insertBefore(totpChip(entry, seed), tl.firstChild);
+    }
+    list.append(row);
   }
 }
 
@@ -382,7 +389,16 @@ async function openEditor(entry) {
 
   applyTypeFields();
   show("screen-editor");
+  $("ed-title").focus();
 }
+
+$("screen-editor").addEventListener("keydown", (e) => {
+  if (e.key === "Escape") { e.preventDefault(); renderTab(); return; }
+  if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.type !== "checkbox") {
+    e.preventDefault();
+    $("btn-edit-save").click();
+  }
+});
 
 function applyTypeFields() {
   const type = $("ed-type").value;
